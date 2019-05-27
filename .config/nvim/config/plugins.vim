@@ -4,7 +4,7 @@ let g:palenight_terminal_italics=1
 let g:material_terminal_italics=1
 set background=dark
 "let g:material_theme_style = 'palenight'
-colorscheme tender
+colorscheme palenight
 " Custom highlight
 hi jsClassDefinition gui=bold
 hi jsFuncArgs gui=italic
@@ -18,7 +18,7 @@ let g:javascript_plugin_flow = 1
 " let g:airline_theme = 'material'
 " LightLine
 let g:lightline = {
-            \ 'colorscheme': 'tender',
+            \ 'colorscheme': 'palenight',
             \ 'active': {
             \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
             \ },

@@ -35,7 +35,7 @@ Plug 'tpope/vim-obsession'
 Plug 'godlygeek/tabular'
 " Other
 " Code Display
-Plug 'drewtempelmeyer/palenight.vim'
+Plug 'skydevht/palenight.vim'
 Plug 'jacoborus/tender.vim'
 Plug 'chrisbra/Colorizer'
 Plug 'ryanoasis/vim-devicons'
