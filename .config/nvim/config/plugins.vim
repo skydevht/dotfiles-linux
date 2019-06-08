@@ -11,11 +11,6 @@ hi jsFuncArgs gui=italic
 let g:javascript_plugin_flow = 1
 " hi Normal guibg=NONE ctermbg=NONE
 " hi NonText guibg=NONE ctermbg=NONE
-" Airlines 
-" let g:airline_powerline_fonts = 1
-"let g:airline#extensions#tagbar#enabled = 0
-" let g:airline#extensions#ale#enabled = 1
-" let g:airline_theme = 'material'
 " LightLine
 let g:lightline = {
             \ 'colorscheme': 'palenight',
@@ -89,48 +84,9 @@ let g:ale_fix_on_save = 1
 " AutoPairs
 let g:AutoPairsMapSpace = 0
 
-" Deoplete 
-call deoplete#custom#source('file', 'rank', 50)
-" call deoplete#custom#var('file', 'enable_buffer_path', 1)
-" let g:deoplete#file#enable_buffer_path=1
-let g:deoplete#enable_at_startup = 1
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif" omnifuncs
-
-function! StrTrim(txt)
-  return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
-endfunction
-
-let g:flow_path = StrTrim(system('PATH=$(npm bin):$PATH && which flow'))
-
-augroup omnifuncs
-    autocmd!
-    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-    "autocmd FileType html,markown setlocal omnifunc=htmlcomplete#CompleteTags
-    "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    "autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-    "autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-augroup end
 autocmd BufNewFile,BufRead *.tern-project set filetype=json
 "autocmd BufNewFile,BufRead *.js set filetype=javascript.jsx
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
 autocmd Filetype typescript setlocal ts=2 sts=2 sw=2
 autocmd Filetype pug setlocal ts=2 sts=2 sw=2
 
-" VIM LSP
-let g:lsp_diagnostics_enabled = 0
-if executable('javascript-typescript-stdio')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'javascript-typescript-stdio',
-        \ 'cmd': {server_info->['javascript-typescript-stdio']},
-        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
-        \ 'whitelist': ['javascript', 'javascript.jsx'],
-        \ })
-endif
-if executable('dart_language_server')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'dart-language-server',
-        \ 'cmd': {server_info->['dart_language_server']},
-        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'pubspec.yaml'))},
-        \ 'whitelist': ['dart'],
-        \ })
-endif

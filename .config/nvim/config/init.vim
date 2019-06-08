@@ -7,19 +7,14 @@ Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-surround'
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'w0rp/ale'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
 " Integration
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-projectionist'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'Shougo/denite.nvim'
 " Completion
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
-Plug 'shougo/deoplete.nvim'
-Plug 'lighttiger2505/deoplete-vim-lsp'
-" Interface
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 " Plug 'vim-airline/vim-airline'
