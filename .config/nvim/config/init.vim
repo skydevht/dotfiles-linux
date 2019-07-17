@@ -25,6 +25,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'wesQ3/vim-windowswap'
 " Commands
 Plug 'easymotion/vim-easymotion'
+Plug 'justinmk/vim-sneak'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-obsession'
 Plug 'godlygeek/tabular'

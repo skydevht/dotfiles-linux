@@ -109,11 +109,6 @@ nmap <leader>gr :Gread<CR>
 nmap <leader>gw :Gwrite<CR>
 nmap <leader>ge :Gedit<CR>
 
-" FZF
-nmap <leader>ff :FZF<CR>
-nmap <leader>fb :Buffers<CR>
-nmap <leader>fa :Ag<CR>
-
 " NERDTree
 nnoremap <leader>nn :NERDTreeToggle<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
@@ -121,16 +116,64 @@ nnoremap <leader>nf :NERDTreeFind<CR>
 " Function keys
 noremap <F3> :ALEFix<CR>
 noremap <F5> :source $HOME/.config/nvim/init.vim<CR>
-nnoremap <F10> :tabe $MYVIMRC<CR>
+nnoremap <F10> :e $MYVIMRC<CR>
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<C-l>"
 let g:UltiSnipsJumpForwardTrigger="<C-l>"
 
-" Deoplete
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" COC
+nmap <silent> <leader>rg <Plug>(coc-definition)
+nmap <silent> <leader>rr <Plug>(coc-references)
+nmap <silent> <leader>ri <Plug>(coc-implementation)
+nmap <silent> <leader>rd <Plug>(coc-diagnostic-info)
+nmap <silent> <leader>rn <Plug>(coc-diagnostic-next)
+nmap <silent> <leader>rp <Plug>(coc-diagnostic-prev)
 
-" LSP
-nnoremap <silent> <leader>rh :LspHover<cr>
-nnoremap <silent> <leader>rd :LspDefinition<cr>
+" DENITE
+nmap <leader>db :Denite buffer -split=floating -winrow=1<CR>
+nmap <leader>df :Denite file/rec -split=floating -winrow=1<CR>
+nnoremap <leader>dg :<C-u>Denite grep:. -no-empty<CR>
+nnoremap <leader>dj :<C-u>DeniteCursorWord grep:.<CR>
+" Define mappings
+autocmd FileType denite call s:denite_my_settings()
+function! s:denite_my_settings() abort
+    nnoremap <silent><buffer><expr> <CR>
+                \ denite#do_map('do_action')
+    nnoremap <silent><buffer><expr> d
+                \ denite#do_map('do_action', 'delete')
+    nnoremap <silent><buffer><expr> p
+                \ denite#do_map('do_action', 'preview')
+    nnoremap <silent><buffer><expr> <C-t>
+                \ denite#do_map('do_action', 'tabopen')
+    nnoremap <silent><buffer><expr> <C-v>
+                \ denite#do_map('do_action', 'vsplit')
+    nnoremap <silent><buffer><expr> <C-h>
+                \ denite#do_map('do_action', 'split')
+    nnoremap <silent><buffer><expr> q
+                \ denite#do_map('quit')
+    nnoremap <silent><buffer><expr> i
+                \ denite#do_map('open_filter_buffer')
+    nnoremap <silent><buffer><expr> yy
+                \ denite#do_map('do_action', 'yank')
+    nnoremap <silent><buffer><expr> <Esc>
+                \ denite#do_map('quit')
+    nnoremap <silent><buffer><expr> <Space>
+                \ denite#do_map('toggle_select').'j'
+    nnoremap <silent><buffer><expr> <C-x>
+                \ denite#do_map('choose_action')
+    nnoremap <silent><buffer><expr><nowait> <Space>
+                \ denite#do_map('toggle_select').'j'
+endfunction
 
+autocmd FileType denite-filter call s:denite_filter_my_settings()
+function! s:denite_filter_my_settings() abort
+    nnoremap <silent><buffer><expr> <Esc>
+                \ denite#do_map('quit')
+    nnoremap <silent><buffer><expr> q
+                \ denite#do_map('quit')
+    inoremap <silent><buffer><expr> <C-c>
+                \ denite#do_map('quit')
+    nnoremap <silent><buffer><expr> <C-c>
+                \ denite#do_map('quit')
+endfunction

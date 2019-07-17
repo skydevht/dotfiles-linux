@@ -11,6 +11,7 @@ hi jsFuncArgs gui=italic
 let g:javascript_plugin_flow = 1
 " hi Normal guibg=NONE ctermbg=NONE
 " hi NonText guibg=NONE ctermbg=NONE
+
 " LightLine
 let g:lightline = {
             \ 'colorscheme': 'palenight',
@@ -19,7 +20,9 @@ let g:lightline = {
             \ },
             \ 'component_function': {
             \   'fugitive': 'LightlineFugitive',
-            \   'filename': 'LightlineFilename'
+            \   'filename': 'LightlineFilename',
+            \   'filetype': 'MyFiletype',
+            \   'fileformat': 'MyFileformat'
             \ }
             \ }
 function! LightlineModified()
@@ -42,9 +45,71 @@ function! LightlineFugitive()
     endif
     return ''
 endfunction
+function! MyFiletype()
+    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+endfunction
+
+function! MyFileformat()
+    return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+endfunction
+
+" Wrap in try/catch to avoid errors on initial install before plugin is available
+try
+    " === Denite setup ==="
+    " Use The Silver Searcher
+    call denite#custom#var('file/rec', 'command',
+                \ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+    " Setup ignore patterns in your .agignore file!
+    " https://github.com/ggreer/the_silver_searcher/wiki/Advanced-Usage
+    call denite#custom#var('grep', 'command', ['ag'])
+    call denite#custom#var('grep', 'command', ['ag'])
+    call denite#custom#var('grep', 'recursive_opts', [])
+    call denite#custom#var('grep', 'pattern_opt', [])
+    call denite#custom#var('grep', 'separator', ['--'])
+    call denite#custom#var('grep', 'final_opts', [])
+    call denite#custom#var('grep', 'default_opts',
+                \ ['--vimgrep', '--smart-case' ])
+    " Remove date from buffer list
+    call denite#custom#var('buffer', 'date_format', '')
+
+    " Custom options for Denite
+    "   auto_resize             - Auto resize the Denite window height automatically.
+    "   prompt                  - Customize denite prompt
+    "   direction               - Specify Denite window direction as directly below current pane
+    "   winminheight            - Specify min height for Denite window
+    "   highlight_mode_insert   - Specify h1-CursorLine in insert mode
+    "   prompt_highlight        - Specify color of prompt
+    "   highlight_matched_char  - Matched characters highlight
+    "   highlight_matched_range - matched range highlight
+    let s:denite_options = {'default' : {
+                \ 'auto_resize': 1,
+                \ 'prompt': 'λ:',
+                \ 'direction': 'rightbelow',
+                \ 'winminheight': '10',
+                \ 'highlight_mode_insert': 'Visual',
+                \ 'highlight_mode_normal': 'Visual',
+                \ 'prompt_highlight': 'Function',
+                \ 'highlight_matched_char': 'Function',
+                \ 'highlight_matched_range': 'Normal'
+                \ }}
+
+    " Loop through denite options and enable them
+    function! s:profile(opts) abort
+        for l:fname in keys(a:opts)
+            for l:dopt in keys(a:opts[l:fname])
+                call denite#custom#option(l:fname, l:dopt, a:opts[l:fname][l:dopt])
+            endfor
+        endfor
+    endfunction
+
+    call s:profile(s:denite_options)
+catch
+    echo 'Denite not installed. It should work after running :PlugInstall'
+endtry
 
 " FZF
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+
 " Emmet
 let g:user_emmet_settings = {
             \ 'javascript.jsx' : {
@@ -90,3 +155,23 @@ autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
 autocmd Filetype typescript setlocal ts=2 sts=2 sw=2
 autocmd Filetype pug setlocal ts=2 sts=2 sw=2
 
+" NERDtree
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeWinSize = 25
+let g:NERDTreeCascadeOpenSingleChildDir = 1
+let g:NERDTreeCascadeSingleChildDir = 0
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeRespectWildIgnore = 0
+let g:NERDTreeAutoDeleteBuffer = 0
+let g:NERDTreeQuitOnOpen = 1
+let g:NERDTreeHijackNetrw = 1
+let g:NERDTreeBookmarksFile = $VARPATH.'/treemarks'
+let g:NERDTreeStatusline = '%#NonText#'
+let NERDTreeIgnore = [
+            \     '\.git$', '\.hg$', '\.svn$', '\.stversions$', '\.pyc$', '\.svn$',
+            \     '\.DS_Store$', '\.sass-cache$', '__pycache__$', '\.egg-info$', '\.cache$'
+            \ ]
+" Close all open buffers on entering a window if the only
+" buffer that's left is the NERDTree buffer
+autocmd WinEnter * if exists('t:NERDTreeBufName') &&
+            \ bufwinnr(t:NERDTreeBufName) != -1 && winnr("$") == 1 | q | endif
